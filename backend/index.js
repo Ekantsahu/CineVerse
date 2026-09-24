@@ -1,6 +1,7 @@
 // Packages
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -17,7 +18,14 @@ connectDB();
 
 const app = express();
 
-// middlewares
+// Middlewares
+app.use(
+  cors({
+    origin: "https://frontend-ekant-s-team.vercel.app",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -31,6 +39,6 @@ app.use("/api/v1/movies", moviesRoutes);
 app.use("/api/v1/upload", uploadRoutes);
 
 const __dirname = path.resolve();
-app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
